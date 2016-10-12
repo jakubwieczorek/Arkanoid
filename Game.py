@@ -3,16 +3,15 @@
 
 import sys
 from PyQt5 import QtWidgets
-from MainWindow import *
+from gamewindow import *
 
-if __name__ == "__main__": # this module is ran directly
+if __name__ == "__main__": # if this module is ran directly
     app = QtWidgets.QApplication(sys.argv)
 
-    w = MainWindow()
+    view = GameView()
 
-    w.resize(600, 300)
-    w.moveCenter()
-    w.setWindowTitle("Game")
-    w.show()
+    view.resize(600,300)
+
+    view.show()
 
     sys.exit(app.exec_())

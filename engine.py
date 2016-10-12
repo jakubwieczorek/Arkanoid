@@ -62,7 +62,8 @@ class Engine(QtWidgets.QFrame):
 
         for i in xrange(10):
             self.box[i].setCoordinates(x * i + 2, 3, x * (i + 1) - 2, 13)
-            self.box[i].paintWidget(painter)
+
+        self.update()
 
     def addWidgetsToBox(self, level):
         if level == 1:
@@ -80,5 +81,3 @@ class Engine(QtWidgets.QFrame):
             self.platformX += 10
 
         self.update()
-
-
