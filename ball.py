@@ -4,37 +4,23 @@
 from PyQt5 import QtWidgets, QtCore, QtGui
 from rect import *
 
-class Ball(QtWidgets.QGraphicsEllipseItem):
-    def __init__(self, parent, x1 = None, y1 = None, r = None):
+class Ball(QtWidgets.QGraphicsPixmapItem):
+    width = 50
+
+    def __init__(self, parent, x1 = None, y1 = None):
         QtWidgets.QWidget.__init__(self)
-        if x1 == None and y1 == None and r == None:
-            self.x1 = parent.geometry().width() / 2
-            self.y1 = parent.geometry().height() / 2
-            self.r = 20
-            self.parent = parent
+        if x1 == None and y1 == None:
+            self.setPos(parent.geometry().width() / 2, parent.geometry().height() / 2)
 
-        elif x1 != None and y1 !=None and r != None:
-            self.setCoordinates(x1, y1)
-            self.setRay(r)
+        elif x1 != None and y1 !=None:
+            self.setPos(x1, y1)
 
-    def paint(self, painter, option, widget = None):
-        pen = QtGui.QPen(QtCore.Qt.green, 5)
-        pen.setJoinStyle(QtCore.Qt.MiterJoin)
+        pixmap = QtGui.QPixmap("../Game/ball.png")
+        self.setPixmap(pixmap.scaled(Ball.width, Ball.width, QtCore.Qt.KeepAspectRatio))
 
-        brush = QtGui.QBrush(QtCore.Qt.yellow)
-        brush.setStyle(QtCore.Qt.SolidPattern)
+        self.parent = parent
 
-        painter.setPen(pen)
-        painter.setBrush(brush)
-
-        painter.drawEllipse(QtCore.QPointF(self.x1, self.y1), self.r, self.r)
-
-    def setCoordinates(self, x1, y1):
-        self.x1 = x1
-        self.y1 = y1
-
-    def setRay(self, r):
-        self.r = r
+        self.r = Ball.width / 2
 
     def collidingEvent(self):
         collidingItems = self.collidingItems() # list with all items
@@ -42,24 +28,13 @@ class Ball(QtWidgets.QGraphicsEllipseItem):
         for i in xrange(0, len(self.collidingItems())):
             if isinstance(collidingItems[i], Rect):
 
-                #path = QtGui.QPainterPath()
-                #path.addEllipse(self.boundingRect())
-                #print path.intersects()
-
                 self.scene().removeItem(collidingItems[i])
                 self.parent.box.remove(collidingItems[i])
+"""
+    def paint(self, painter, option, widget = None):
+        pen = QtGui.QPen(QtCore.Qt.red, 5)
+        painter.drawRect(self.boundingRect())
 
     def boundingRect(self):
-        return QtCore.QRectF(QtCore.QPointF(self.x1 - self.r, self.y1 - self.r), QtCore.QPointF(self.x1 + self.r, self.y1 + self.r))
-
-
-    def shape(self):
-       path = QtGui.QPainterPath()
-       path.addEllipse(self.boundingRect())
-
-       stroker = QtGui.QPainterPathStroker()
-       stroker.setWidth(5)
-       stroker.setJoinStyle(QtCore.Qt.MiterJoin)
-
-       return stroker.createStroke(path)
-
+        return QtCore.QRectF(self.x(), self.y(), self.x() + Rect.width, self.y() + Rect.width)
+"""

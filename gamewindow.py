@@ -22,8 +22,6 @@ class GameView(QtWidgets.QGraphicsView):
 
         self.setWindowTitle("My Game")
 
-        #self.setFocusPolicy(QtCore.Qt.StrongFocus) # this function allows keyevents work
-
         self.ball = Ball(self)
         self.scene.addItem(self.ball)
 
@@ -32,8 +30,8 @@ class GameView(QtWidgets.QGraphicsView):
         self.timer.start(self.speed)
         self.timer.timeout.connect(self.timeEvent)
 
-        self.ballPreviousPositionY = self.ball.y1 - 1.1 # its demanding to give these variables initial values for example these
-        self.ballPreviousPositionX = self.ball.x1 - 1.1
+        self.ballPreviousPositionY = self.ball.y() - 1.1 # its demanding to give these variables initial values for example these
+        self.ballPreviousPositionX = self.ball.x() - 1.1
 
         self.addShapes()
 
@@ -43,28 +41,29 @@ class GameView(QtWidgets.QGraphicsView):
     def moveBall(self):
         self.ball.collidingEvent()
 
-        if  self.sceneRect.right() - (self.ball.x1 + self.ball.r) < 1 or self.ball.x1 - self.ball.r < 2:
-            shiftX = -self.ball.x1 + self.ballPreviousPositionX
-            shiftY = self.ball.y1 - self.ballPreviousPositionY
+        if  self.sceneRect.right() - (self.ball.x() + 2 * self.ball.r) < 1 or self.ball.x() < 2:
+            shiftX = -self.ball.x() + self.ballPreviousPositionX
+            shiftY = self.ball.y() - self.ballPreviousPositionY
 
-        elif self.sceneRect.bottom() - (self.ball.y1 + self.ball.r) < 1 or self.ball.y1 - self.ball.r < 2:
-            shiftX = self.ball.x1 - self.ballPreviousPositionX
-            shiftY = -self.ball.y1 + self.ballPreviousPositionY
+        elif self.sceneRect.bottom() - (self.ball.y() + 2 * self.ball.r) < 1 or self.ball.y() < 2:
+            shiftX = self.ball.x() - self.ballPreviousPositionX
+            shiftY = -self.ball.y() + self.ballPreviousPositionY
 
         else:
-            shiftX = self.ball.x1 - self.ballPreviousPositionX
-            shiftY = self.ball.y1 - self.ballPreviousPositionY
+            shiftX = self.ball.x() - self.ballPreviousPositionX
+            shiftY = self.ball.y() - self.ballPreviousPositionY
 
 
-        self.ballPreviousPositionX = self.ball.x1
-        self.ballPreviousPositionY = self.ball.y1
-        self.ball.setCoordinates(self.ball.x1 + shiftX, self.ball.y1 + shiftY)
+        self.ballPreviousPositionX = self.ball.x()
+        self.ballPreviousPositionY = self.ball.y()
+        self.ball.setPos(self.ball.x() + shiftX, self.ball.y() + shiftY)
+
         self.scene.update()
 
     def addShapes(self):
         shapeWidth = self.sceneRect.width() / 10
-        rawAmount = self.sceneRect.width() / shapeWidth
+        rawAmount = 600 / Rect.getWidth()
 
         for i in xrange(0, int(rawAmount)):
-            self.box.append(Rect(self, shapeWidth * i + 5, 0, shapeWidth * (i + 1), 50))
+            self.box.append(Rect(self, Rect.getWidth() * i, 0))
             self.scene.addItem(self.box[i])
