@@ -1,22 +1,24 @@
-# !/usr/bin/python3
+# !/usr/bin/env python2.7
 # -*- coding: utf-8 -*-
 
 from PyQt5 import QtCore, QtGui, QtWidgets
 from rect import *
 
 class Platform(Rect):
-    def __init__(self, parent, x1 = None, y1 = None
-                 , x2 = None, y2 = None):
-        Rect.__init__(self, parent, x1, y1, x2, y2)
+    width = 100
+    height = width * 157 / 654
 
-    def paintWidget(self, painter):
-        pen = QtGui.QPen(QtCore.Qt.black, 5)
-        pen.setJoinStyle(QtCore.Qt.MiterJoin)
+    def __init__(self, parent, x, y):
+        QtWidgets.QGraphicsPixmapItem.__init__(self)
 
-        painter.setPen(pen)
+        pixmap = QtGui.QPixmap("../Game/platform.png")
+        self.setPixmap(pixmap.scaled(Platform.width, Platform.height, QtCore.Qt.KeepAspectRatio))
+        self.setPos(x, y)
 
-        rect = QtCore.QRectF(QtCore.QPointF(self.x1, self.y1), QtCore.QPointF(self.x2, self.y2))
-        painter.drawRect(rect)
+    def getWidth():
+        return Platform.width
+    getWidth = staticmethod(getWidth)
 
-        brush = QtGui.QBrush(QtCore.Qt.black)
-        painter.fillRect(rect, brush)
+    def getHeight():
+        return Platform.height
+    getHeight = staticmethod(getHeight)

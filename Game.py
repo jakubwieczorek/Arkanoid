@@ -1,16 +1,18 @@
-#!/usr/bin/python3
+#!/usr/bin/env python2.7
 # -*- coding: utf-8 -*-
 
 import sys
 from PyQt5 import QtWidgets
-from gamewindow import *
+from mainwindow import *
 
 if __name__ == "__main__": # if this module is ran directly
     app = QtWidgets.QApplication(sys.argv)
 
-    view = GameView()
+    view = MainWindow()
 
-    view.resize(600,300)
+    view.resize(680,400)
+    view.setMaximumSize(QtCore.QSize(680, 400))
+    view.setMinimumSize(QtCore.QSize(680, 400))
 
     view.show()
 
