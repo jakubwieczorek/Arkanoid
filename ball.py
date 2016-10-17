@@ -31,6 +31,7 @@ class Ball(QtWidgets.QGraphicsPixmapItem):
         isCollision = False
 
         for i in xrange(0, len(self.collidingItems())):
+            distance = pow(pow(self.getPreviousPosition().x() - self.pos().x(), 2) + pow(self.getPreviousPosition().y() - self.pos().y(), 2), 0.5)
             if type(collidingItems[i]) is Rect or type(collidingItems[i]) is Platform:
                 isCollision = True
 
@@ -48,9 +49,32 @@ class Ball(QtWidgets.QGraphicsPixmapItem):
                     shiftY = self.y() - self.getPreviousPosition().y()
 
                 # collision on bottom or top edge of the rect
-                elif abs(middleBallX - middleRectX) < rectPixmap.getWidth() / 2 and -(rectPixmap.y() + rectPixmap.getHeight()) + self.y() < 3 :
-                    shiftX = self.x() - self.getPreviousPosition().x()
-                    shiftY = -self.y() + self.getPreviousPosition().y()
+                elif abs(middleBallX - middleRectX) < rectPixmap.getWidth() / 2 + Ball.width / 2 and -(rectPixmap.y() + rectPixmap.getHeight()) + self.y() < 3 :
+
+                    # distance between previous position and present position must be the same !!!!
+                    if abs(middleBallX - middleRectX) < rectPixmap.getWidth() / 2 - Ball.width / 2: # if in setting of middle of rect
+                        shiftX = self.x() - self.getPreviousPosition().x()
+                        shiftY = -self.y() + self.getPreviousPosition().y()
+                    elif abs(middleBallX - middleRectX) < rectPixmap.getWidth() / 2 and abs(middleBallX - middleRectX) > rectPixmap.getWidth() / 2 - Ball.width / 2: # if in setting of the corner
+                        shiftX = 1.5 * (self.x() - self.getPreviousPosition().x())
+                        shiftY = -self.y() + self.getPreviousPosition().y()
+                        shift = pow(pow(shiftX, 2) + pow(shiftY, 2), 0.5)
+
+                        shiftX = shiftX * distance / shift
+                        shiftY = shiftY * distance / shift
+
+                        print "I'm in 2"
+
+                    else: # if in the setting of the corner and rect Ball corner
+                        shiftX = 2 * (self.x() - self.getPreviousPosition().x())
+                        shiftY = -(-self.y() + self.getPreviousPosition().y())
+                        print "I'm in"
+
+                        shift = pow(pow(shiftX, 2) + pow(shiftY, 2), 0.5)
+
+                        shiftX = shiftX * distance / shift
+                        shiftY = shiftY * distance / shift
+
 
                 else:
                     shiftX = self.x() - self.getPreviousPosition().x()
