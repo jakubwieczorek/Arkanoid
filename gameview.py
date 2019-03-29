@@ -129,8 +129,8 @@ class GameView(QtWidgets.QGraphicsView):
         columnAmount = 6
 
         rectAmount = 0
-        for i in xrange(0, int(rawAmount)):
-            for j in xrange(0, columnAmount):
+        for i in range(0, int(rawAmount)):
+            for j in range(0, columnAmount):
                 self.box.append(Rect(self, Rect.getWidth() * i, j * Rect.getHeight()))
                 self.scene.addItem(self.box[rectAmount])
                 rectAmount = rectAmount + 1

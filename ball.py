@@ -30,7 +30,7 @@ class Ball(QtWidgets.QGraphicsPixmapItem):
 
         isCollision = False
 
-        for i in xrange(0, len(self.collidingItems())):
+        for i in range(0, len(self.collidingItems())):
             distance = pow(pow(self.getPreviousPosition().x() - self.pos().x(), 2) + pow(self.getPreviousPosition().y() - self.pos().y(), 2), 0.5)
             if type(collidingItems[i]) is Rect or type(collidingItems[i]) is Platform:
                 isCollision = True
@@ -63,12 +63,12 @@ class Ball(QtWidgets.QGraphicsPixmapItem):
                         shiftX = shiftX * distance / shift
                         shiftY = shiftY * distance / shift
 
-                        print "I'm in 2"
+                        print("I'm in 2")
 
                     else: # if in the setting of the corner and rect Ball corner
                         shiftX = 2 * (self.x() - self.getPreviousPosition().x())
                         shiftY = -(-self.y() + self.getPreviousPosition().y())
-                        print "I'm in"
+                        print("I'm in")
 
                         shift = pow(pow(shiftX, 2) + pow(shiftY, 2), 0.5)
 
