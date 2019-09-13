@@ -11,6 +11,7 @@ class GameView(QtWidgets.QGraphicsView):
     msgToStatusBar = QtCore.pyqtSignal(str)
 
     def __init__(self, parent):
+        self.parent = parent
         QtWidgets.QGraphicsView.__init__(self)
 
         self.msgToStatusBar[str].connect(parent.statusBar.showMessage)
@@ -19,7 +20,7 @@ class GameView(QtWidgets.QGraphicsView):
 
         self.box = [] # container for all items
 
-        self.setWindowTitle("Game")
+        self.setWindowTitle("Arkanoid")
 
         self.sceneRect = QtCore.QRectF(0,0,600,300)
 
@@ -29,15 +30,10 @@ class GameView(QtWidgets.QGraphicsView):
         self.setScene(self.welcomeScene)
 
         # timer and speed
-        self.speed = 3
+        self.speed = 1
         self.timer = QtCore.QTimer(self)
         self.timer.timeout.connect(self.timeEvent)
 
-        self.ball.setPreviousPosition(QtCore.QPointF(self.ball.x() + 0.5, self.ball.y() + 0.5))
-        self.addShapes()
-
-        self.points = 0
-        self.isPaused = False
 
     def createGameScene(self):
         # game scene with all items: ball, slabs, etc...
@@ -50,6 +46,11 @@ class GameView(QtWidgets.QGraphicsView):
 
         self.platform = platform.Platform(self, self.sceneRect.width() / 2, self.sceneRect.height() - platform.Platform.getHeight())
         self.scene.addItem(self.platform)
+        self.ball.setPreviousPosition(QtCore.QPointF(self.ball.x() + 0.5, self.ball.y() + 0.5))
+        self.addShapes()
+
+        self.points = 0
+        self.isPaused = False
 
     def createWelcomeScene(self):
         self.welcomeScene = QtWidgets.QGraphicsScene()
@@ -59,9 +60,9 @@ class GameView(QtWidgets.QGraphicsView):
         startButton.setGeometry(QtCore.QRect(self.sceneRect.width() / 2 - 75, 50, 150, 50))
         self.welcomeScene.addWidget(startButton)
 
-        self.nameEdit = QtWidgets.QLineEdit()
-        self.nameEdit.setGeometry(QtCore.QRect(self.sceneRect.width() / 2 - 75, 100, 150, 50))
-        self.welcomeScene.addWidget(self.nameEdit)
+        #self.nameEdit = QtWidgets.QLineEdit()
+        #self.nameEdit.setGeometry(QtCore.QRect(self.sceneRect.width() / 2 - 75, 100, 150, 50))
+        #self.welcomeScene.addWidget(self.nameEdit)
 
         quitButton = QtWidgets.QPushButton("Quit")
         quitButton.setGeometry(QtCore.QRect(self.sceneRect.width() / 2 - 75, 250, 150, 50))
@@ -74,7 +75,10 @@ class GameView(QtWidgets.QGraphicsView):
         quitButton.clicked.connect(QtWidgets.QApplication.quit)
 
     def timeEvent(self):
-        self.moveBall()
+        if not self.moveBall():
+            self.timer.stop()
+            self.createGameScene()
+            self.setScene(self.welcomeScene)
 
     def mouseMoveEvent(self, event):
         if event.pos().x() < self.sceneRect.width() - self.platform.getWidth() and self.isPaused == False:
@@ -114,6 +118,7 @@ class GameView(QtWidgets.QGraphicsView):
             elif self.sceneRect.bottom() - (self.ball.y() + 2 * self.ball.r) < 1:
                 self.ball.hide()
                 shiftY = shiftX = 0
+                return 0
 
             else:
                 shiftX = self.ball.x() - self.ball.getPreviousPosition().x()
@@ -123,6 +128,7 @@ class GameView(QtWidgets.QGraphicsView):
             self.ball.setPos(self.ball.x() + shiftX, self.ball.y() + shiftY)
 
         self.scene.update()
+        return 1
 
     def addShapes(self):
 
