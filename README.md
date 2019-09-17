@@ -13,13 +13,13 @@ source venv/bin/activate
 ```
 
 ### Run Arkanoid
-To run it you need have python3 installed.
+To run it you need have python3 installed. When activating venv, type:
 ```
 python3 arkanoid.py
 ```
 
 <img src="https://raw.githubusercontent.com/wiki/jakubwieczorek/Arkanoid/start.png" width="700" />
-<img src="https://raw.githubusercontent.com/wiki/jakubwieczorek/Arkanoid/main_view.png" width="700" />
+<img src="https://raw.githubusercontent.com/wiki/jakubwieczorek/Arkanoid/main_page.png" width="700" />
 
 ## Questions or need help?
 Don't hesitate to send me a mail on jakub.wieczorek0101@gmail.com.
