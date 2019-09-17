@@ -1,5 +1,3 @@
-# !usr/bin/env/ python2.7
-
 from PyQt5 import QtCore, QtGui, QtWidgets
 
 class BackgroundItem(QtWidgets.QGraphicsPixmapItem):
