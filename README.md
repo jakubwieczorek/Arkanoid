@@ -4,7 +4,7 @@
 
 ## About
 Arkanoid is a clasic game remembered by everyone when you have to bounce a ball between a set of blocks on the ceiling
-and a platform, which prevents a ball from falling from the playing field. That version is implemented in Python3 and PyQt5. 
+and a platform, which prevents a ball from falling from the playing field. That version is implemented in Python3 and PyQt5. Only one level is implemented.
 
 ## Get started
 Clone repository go to root directory of a project and use virtual environment with preinstalled libraries:
